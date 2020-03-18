@@ -1,8 +1,6 @@
 package com.show.api;
 
-import java.io.File;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URL;
@@ -316,6 +314,30 @@ public class NormalRequest   {
 			}
 		}
 		return res;
+	}
+
+	//把文件转为base64字符串,因为normalRequest中没有无参的构造函数,不能直接调用 ,所以把这个方法做成了静态方法
+	public static String fileToBase64(File file){
+		byte[] buffer = null;
+		try{
+			FileInputStream fis = new FileInputStream(file);
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			byte[] b = new byte[1024];
+			int n;
+			while ((n = fis.read(b)) != -1)
+			{
+				bos.write(b, 0, n);
+			}
+			fis.close();
+			bos.close();
+			buffer = bos.toByteArray();
+		}catch (FileNotFoundException e){
+			e.printStackTrace();
+		}catch (IOException e){
+			e.printStackTrace();
+		}
+		String str = javax.xml.bind.DatatypeConverter.printBase64Binary(buffer);
+		return str;
 	}
 	
 	public static void main(String adfas[]) throws  Exception{
