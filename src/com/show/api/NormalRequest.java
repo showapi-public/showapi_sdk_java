@@ -282,7 +282,7 @@ public class NormalRequest   {
 			res= WebUtils.doPost(this);
 		} catch (Exception e) {
 			if(printException)e.printStackTrace();
-			res="{ret_code:-1,error:\""+e.toString()+"\"}";
+			res="{\"ret_code\":-1,error:\""+e.toString()+"\"}";
 		}
 		return res;
 	}
@@ -294,7 +294,7 @@ public class NormalRequest   {
 		} catch (Exception e) {
 			if(printException)e.printStackTrace();
 			try {
-				res=("{ret_code:-1,error:\""+e.toString()+"\"}").getBytes("utf-8");
+				res=("{\"ret_code\":-1,error:\""+e.toString()+"\"}").getBytes("utf-8");
 			} catch (UnsupportedEncodingException e1) {
 				if(printException)e1.printStackTrace();
 			}
@@ -309,7 +309,7 @@ public class NormalRequest   {
 			res= WebUtils.doGet(this);
 		} catch (Exception e) {
 			if(printException)e.printStackTrace();
-			res="{ret_code:-1,error:\""+e.toString()+"\"}";
+			res="{\"ret_code\":-1,error:\""+e.toString()+"\"}";
 		}
 		return res;
 	}
@@ -321,7 +321,7 @@ public class NormalRequest   {
 		} catch (Exception e) {
 			if(printException)e.printStackTrace();
 			try {
-				res=("{ret_code:-1,error:\""+e.toString()+"\"}").getBytes("utf-8");
+				res=("{\"ret_code\":-1,error:\""+e.toString()+"\"}").getBytes("utf-8");
 			} catch (UnsupportedEncodingException e1) {
 				if(printException)e1.printStackTrace();
 			}
