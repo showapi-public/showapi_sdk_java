@@ -233,7 +233,7 @@ public class NormalRequest   {
 
 	/**
 	 * @param heads : Accept-Encoding: gzip, deflate\r\nHost: www.qichacha.com\r\n
-	 * 批量添加头部,头部信息以\r\n 或者\n进行分割,每条头部信息以":"分割K-V键值对
+	 * 添加字符串的头参数,用换行符和冒号组成的多个键值对
 	 */
 	public NormalRequest addHeads(String heads) {
 		if(StringUtils.isEmpty(heads)||!heads.contains("\n")) {
@@ -245,9 +245,15 @@ public class NormalRequest   {
 		} else if(heads.contains("\n")){
 			hs = heads.split("\n");
 		}else if(heads.contains(":")){
-			String k = heads.substring(0,heads.lastIndexOf(":"));
-			String v = heads.replace(k+":","");
-			this.headMap.put(k.trim(),v.trim());
+			String pre = "";
+			if(heads.startsWith(":")){
+				pre = ":";
+				heads = heads.substring(1);
+			}
+			if(heads.contains(":")) {
+				String[] kv = heads.split(":");
+				this.headMap.put(pre + kv[0].trim(), kv[1].trim());
+			}
 			return this;
 		}else{
 			return this;
@@ -256,9 +262,15 @@ public class NormalRequest   {
 			if(h.trim().equals("")||!h.contains(":")) {
 				continue;
 			}
-			String k = h.substring(0,h.lastIndexOf(":"));
-			String v = h.replace(k+":","");
-			this.headMap.put(k.trim(),v.trim());
+			String pre = "";
+			if(h.startsWith(":")){
+				pre = ":";
+				h = h.substring(1);
+			}
+			if(h.contains(":")) {
+				String[] kv = h.split(":");
+				this.headMap.put(pre + kv[0].trim(), kv[1].trim());
+			}
 		}
 		return this;
 	}
