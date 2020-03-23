@@ -173,22 +173,6 @@ public class NormalRequest   {
         return this;
     }
 
-    //通过字符串设置头部
-    public NormalRequest setHeadString(String headString) {
-	    if(StringUtils.isEmpty(headString))return this;
-        headString=headString.trim();
-        String seg[]=headString.split("\r\n");
-        Map head=getHeadMap();
-        for (String k:seg){
-            String line=k.trim();
-            System.out.println(line);
-            int ind=line.indexOf(":");
-            if(ind==-1)continue;
-            head.put(line.substring(0,ind),line.substring(ind+1));
-        }
-//        System.out.println(getHeadMap());
-        return this;
-    }
 	public NormalRequest setCharset(String charset) {
 		this.charset=charset;
 		return this;
@@ -282,7 +266,7 @@ public class NormalRequest   {
 			res= WebUtils.doPost(this);
 		} catch (Exception e) {
 			if(printException)e.printStackTrace();
-			res="{\"ret_code\":-1,error:\""+e.toString()+"\"}";
+			res="{\"ret_code\":-1,\"error\":\""+e.toString()+"\"}";
 		}
 		return res;
 	}
@@ -294,7 +278,7 @@ public class NormalRequest   {
 		} catch (Exception e) {
 			if(printException)e.printStackTrace();
 			try {
-				res=("{\"ret_code\":-1,error:\""+e.toString()+"\"}").getBytes("utf-8");
+				res=("{\"ret_code\":-1,\"error\":\""+e.toString()+"\"}").getBytes("utf-8");
 			} catch (UnsupportedEncodingException e1) {
 				if(printException)e1.printStackTrace();
 			}
@@ -309,7 +293,7 @@ public class NormalRequest   {
 			res= WebUtils.doGet(this);
 		} catch (Exception e) {
 			if(printException)e.printStackTrace();
-			res="{\"ret_code\":-1,error:\""+e.toString()+"\"}";
+			res="{\"ret_code\":-1,\"error\":\""+e.toString()+"\"}";
 		}
 		return res;
 	}
@@ -321,7 +305,7 @@ public class NormalRequest   {
 		} catch (Exception e) {
 			if(printException)e.printStackTrace();
 			try {
-				res=("{\"ret_code\":-1,error:\""+e.toString()+"\"}").getBytes("utf-8");
+				res=("{\"ret_code\":-1,\"error\":\""+e.toString()+"\"}").getBytes("utf-8");
 			} catch (UnsupportedEncodingException e1) {
 				if(printException)e1.printStackTrace();
 			}
@@ -352,13 +336,5 @@ public class NormalRequest   {
 		String str = javax.xml.bind.DatatypeConverter.printBase64Binary(buffer);
 		return str;
 	}
-	
-	public static void main(String adfas[]) throws  Exception{
-		NormalRequest req=new  NormalRequest("http://192.168.218.138:899/admin/tttttt") ;
-		String str=req.get();
-		req.getRes_headMap();
-		System.out.println(req.getRes_status());
-		System.out.println(str);
-	}
-	
+
 }

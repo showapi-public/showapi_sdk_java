@@ -460,7 +460,6 @@ public   class WebUtils {
 //		FileItem file = new FileItem("d:/code.txt");
 //		String a=new String(file.getContent());
 //			String str=  new NormalRequest("https://www.showapi.com/apiNew/apiListDiv/" )
-//				.setHeadString(a)
 //				.addTextPara("search","短信")
 //				.addTextPara("sortType","i")
 //				.addTextPara("sortValue","-1")
