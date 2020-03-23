@@ -235,6 +235,7 @@ public class NormalRequest   {
 	 * @param heads : Accept-Encoding: gzip, deflate\r\nHost: www.qichacha.com\r\n
 	 * 添加字符串的头参数,用换行符和冒号组成的多个键值对
 	 */
+
 	public NormalRequest addHeads(String heads) {
 		if(StringUtils.isEmpty(heads)||!heads.contains("\n")) {
 			return this;
