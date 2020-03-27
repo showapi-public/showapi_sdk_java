@@ -132,7 +132,7 @@ public   class WebUtils {
 					byte[] endBoundaryBytes = ("\r\n--" + boundary + "--\r\n").getBytes(charset);
 					bout.write(endBoundaryBytes);
 					body=bout.toByteArray();
-					System.out.println(new String(body));
+//					System.out.println(new String(body));
 				}else{
 
 					String body_content = buildQuery(req.getTextMap() ,charset  );
