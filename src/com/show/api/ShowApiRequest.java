@@ -1,17 +1,9 @@
 package com.show.api;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
-import com.show.api.util.ShowApiLogger;
 import com.show.api.util.ShowApiUtils;
 import com.show.api.util.WebUtils;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 
 /**
