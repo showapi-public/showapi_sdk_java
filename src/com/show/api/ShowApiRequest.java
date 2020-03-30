@@ -1,17 +1,9 @@
 package com.show.api;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
-import com.show.api.util.ShowApiLogger;
 import com.show.api.util.ShowApiUtils;
 import com.show.api.util.WebUtils;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 
 /**
@@ -58,7 +50,7 @@ public class ShowApiRequest extends NormalRequest {
         } catch (Exception e) {
             e.printStackTrace();
             try {
-                res = ("{showapi_res_code:-1,showapi_res_error:\"" + e.toString() + "\"}").getBytes("utf-8");
+                res = ("{\"showapi_res_code\":-1,\"showapi_res_error\":\"" + e.toString() + "\"}").getBytes("utf-8");
             } catch (UnsupportedEncodingException e1) {
                 e1.printStackTrace();
             }
@@ -79,7 +71,7 @@ public class ShowApiRequest extends NormalRequest {
             res = new String(b, "utf-8");
         } catch (Exception e) {
             e.printStackTrace();
-            res = "{showapi_res_code:-1,showapi_res_error:\"" + e.toString() + "\"}";
+            res = "{\"showapi_res_code\":-1,\"showapi_res_error\":\"" + e.toString() + "\"}";
         }
         return res;
     }
@@ -93,7 +85,7 @@ public class ShowApiRequest extends NormalRequest {
         } catch (Exception e) {
             e.printStackTrace();
             try {
-                res = ("{showapi_res_code:-1,showapi_res_error:\"" + e.toString() + "\"}").getBytes("utf-8");
+                res = ("{\"showapi_res_code\":-1,\"showapi_res_error\":\"" + e.toString() + "\"}").getBytes("utf-8");
             } catch (UnsupportedEncodingException e1) {
                 e1.printStackTrace();
             }
@@ -102,7 +94,7 @@ public class ShowApiRequest extends NormalRequest {
     }
 
     private String errorMsg(String msg) {
-        String str = "{" + Constants.SHOWAPI_RES_CODE + ":-1," + Constants.SHOWAPI_RES_ERROR + ":\"" + msg + "\"," + Constants.SHOWAPI_RES_BODY + ":{}}";
+        String str = "{\"" + Constants.SHOWAPI_RES_CODE + "\":-1,\"" + Constants.SHOWAPI_RES_ERROR + "\":\"" + msg + "\",\"" + Constants.SHOWAPI_RES_BODY + "\":{}}";
         return str;
     }
 
