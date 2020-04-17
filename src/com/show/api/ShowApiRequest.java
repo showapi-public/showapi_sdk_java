@@ -41,6 +41,7 @@ public class ShowApiRequest extends NormalRequest {
         return res;
     }
 
+
     public byte[] postAsByte() {
         byte res[] = null;
         try {

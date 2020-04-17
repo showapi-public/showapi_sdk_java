@@ -1,20 +1,14 @@
 package com.show.api;
 
+import com.show.api.util.StringUtils;
+import com.show.api.util.WebUtils;
+
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import com.show.api.util.ShowApiLogger;
-import com.show.api.util.ShowApiUtils;
-import com.show.api.util.StringUtils;
-import com.show.api.util.WebUtils;
 
 
 /**
@@ -214,6 +208,26 @@ public class NormalRequest   {
         }
         return this;
     }
+
+	/**
+	 * 添加base64字符串参数，使用传入文件内容
+	 * @param key 参数名
+	 * @param filePath 文件路径
+	 * @return NormalRequest
+	 */
+	public NormalRequest addBase64Para(String key,String filePath){
+		return addBase64Para(key,new File(filePath));
+	}
+
+	/**
+	 * 添加base64字符串参数，使用传入文件内容
+	 * @param key 参数名
+	 * @param file 文件对象
+	 * @return NormalRequest
+	 */
+	public NormalRequest addBase64Para(String key,File file){
+		return addTextPara(key,fileToBase64(file));
+	}
 
 	/**
 	 * @param heads : Accept-Encoding: gzip, deflate\r\nHost: www.qichacha.com\r\n
