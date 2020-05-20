@@ -251,7 +251,7 @@ public class NormalRequest   {
 			}
 			if(heads.contains(":")) {
 				String[] kv = heads.split(":");
-				this.headMap.put(pre + kv[0].trim(), kv[1].trim());
+				this.headMap.put(pre + kv[0].trim(), heads.substring(heads.indexOf(":")+1).trim());
 			}
 			return this;
 		}else{
@@ -268,7 +268,7 @@ public class NormalRequest   {
 			}
 			if(h.contains(":")) {
 				String[] kv = h.split(":");
-				this.headMap.put(pre + kv[0].trim(), kv[1].trim());
+				this.headMap.put(pre + kv[0].trim(), h.substring(h.indexOf(":")+1).trim());
 			}
 		}
 		return this;
