@@ -367,15 +367,12 @@ public   class WebUtils {
 		return query.toString();
 	}
 	protected static byte[]  getResponseAsByte(HttpURLConnection conn ,int limit_size) throws IOException {
-		InputStream es = conn.getErrorStream();
+		InputStream es = conn.getErrorStream();  //头>=400时，会有errorStream
 		if (es == null) {
 			if(conn.getContentEncoding()!=null&&conn.getContentEncoding().toLowerCase().equals("gzip")){
 				byte bbb[]=unzip(conn.getInputStream(),  limit_size).toByteArray();
 				return  bbb;
 			}else{
-				if(conn.getResponseCode()>=400){
-					return new byte[0];
-				}
 				return _readByteFromStream(conn.getInputStream(),limit_size );
 			}
 		} else {
@@ -430,7 +427,7 @@ public   class WebUtils {
 	}
 	public static void main(String[] args)  throws  Exception{
 		{
-			byte[] b=  new NormalRequest("http://www.boc.cn/sourcedb/whpj/" )
+			byte[] b=  new NormalRequest("https://www.ip138.com/" )
 					.getAsByte();
 			System.out.println(new String(b,"utf-8"));
 
