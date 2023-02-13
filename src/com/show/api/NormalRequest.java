@@ -107,6 +107,8 @@ public class NormalRequest   {
 	protected Map<String,String> textMap=new HashMap<String, String>();
 	protected Map<String,File> uploadMap=new HashMap<String, File>();
 	protected Map<String,String> headMap=new HashMap<String, String>();
+	protected Map<String,String> urlMap=new HashMap<String, String>();  //肯定只放在url中的参数
+
 	protected Map<String,List<String>> res_headMap=new HashMap<String,List<String>>();//返回时的Map
 	
 	public Map<String, List<String>> getRes_headMap() {
@@ -134,6 +136,15 @@ public class NormalRequest   {
 	public void setTextMap(Map<String, String> textMap) {
 		this.textMap = textMap;
 	}
+
+	public Map<String, String> getUrlMap() {
+		return urlMap;
+	}
+	public void setUrlMap(Map<String, String> urlMap) {
+		this.urlMap = urlMap;
+	}
+
+
 	public String getUrl() {
 		return url;
 	}
@@ -180,8 +191,14 @@ public class NormalRequest   {
 		this.url=url;
 		return this;
 	}
-	
-	
+
+	/**
+	 * 添加url中的字符串参数
+	 */
+	public NormalRequest addUrlPara(String key,String value) {
+		this.urlMap.put(key,value);
+		return this;
+	}
 	/**
 	 * 添加post体的字符串参数
 	 */

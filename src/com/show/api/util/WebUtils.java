@@ -81,14 +81,17 @@ public   class WebUtils {
 		byte[] rsp = null;
 		byte[] body = new byte[0];
 		ResData res=new ResData();
-		String ctype="" ,query="",boundary="";
-
 		String charset= req.getCharset();
+		String ctype = "application/x-www-form-urlencoded;charset=" + charset;
+		String query="";
+		String boundary="";
+
 		if(method.equals(METHOD_GET)){
 			ctype = "application/x-www-form-urlencoded;charset=" + charset;
-			query = buildQuery(req.getTextMap() ,charset  );
+			query = buildQuery(req.getUrlMap(),req.getTextMap() ,charset  );
 
 		}else if(method.equals(METHOD_POST)){
+			query = buildQuery(req.getUrlMap(),null ,charset  );
 			boolean upload=false;
 			if(req.getUploadMap()!=null && req.getUploadMap().size()>0){
 				boundary = String.valueOf(System.nanoTime()); // 随机分隔线
@@ -135,7 +138,7 @@ public   class WebUtils {
 //					System.out.println(new String(body));
 				}else{
 
-					String body_content = buildQuery(req.getTextMap() ,charset  );
+					String body_content = buildQuery(req.getTextMap(),req.getUrlMap() ,charset  );
 					if(body_content!=null){
 //						System.out.println(req.getTextMap());
 						body=body_content.getBytes(charset  );
@@ -339,12 +342,13 @@ public   class WebUtils {
 		return new URL(strUrl);
 	}
 
-	public static String buildQuery(Map  params,String charset )   {
-		if (params == null || params.isEmpty()) {
-			return null;
-		}
+	public static String buildQuery(Map<String, String>  urlMap,Map<String, String>  params,String charset )   {
+		if (urlMap == null ){return  null;}
+		if (params != null ){urlMap.putAll(params);}
+		if (urlMap.isEmpty()) {return null;}
+
 		StringBuilder query = new StringBuilder();
-		Set<Entry<String, String>> entries = params.entrySet();
+		Set<Entry<String, String>> entries = urlMap.entrySet();
 		boolean hasParam = false;
 		try {
 			for (Entry<String, String> entry : entries) {
@@ -427,8 +431,12 @@ public   class WebUtils {
 	}
 	public static void main(String[] args)  throws  Exception{
 		{
-			byte[] b=  new NormalRequest("https://www.ip138.com/" )
-					.getAsByte();
+			byte[] b=  new NormalRequest("http://httpbin.org/anything?xxxx=0000&yyy=pppp" )
+					.addUrlPara("aaa","111")
+					.addUrlPara("bbb","222")
+					.addTextPara("ccc","中文")
+					.setBodyString("gggggggggggg")
+					.postAsByte();
 			System.out.println(new String(b,"utf-8"));
 
 		}
