@@ -2,8 +2,12 @@ package com.show.api;
 
 import com.show.api.util.ShowApiUtils;
 import com.show.api.util.WebUtils;
+
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -16,8 +20,7 @@ public class ShowApiRequest extends NormalRequest {
     public ShowApiRequest(String url, String appid, String appSecret) {
         super(url);
         this.appSecret = appSecret;
-        this.addTextPara("showapi_appid", appid);
-        this.addHeadPara("User-Agent", "showapi-sdk-java");//设置默认头
+        this.addUrlPara("showapi_appid", appid);
     }
 
 
@@ -45,8 +48,13 @@ public class ShowApiRequest extends NormalRequest {
     public byte[] postAsByte() {
         byte res[] = null;
         try {
-            String signResult = addSign();
+
+            String signResult = addSign();  //这里是在textArea中添加sian参数
             if (signResult != null) return signResult.getBytes("utf-8");
+            if(this.body!=null || this.bodyString!=null){
+                this.urlMap.putAll(this.textMap);
+                this.textMap.clear();
+            }
             res = WebUtils.doPostAsByte(this);
         } catch (Exception e) {
             e.printStackTrace();
@@ -60,8 +68,12 @@ public class ShowApiRequest extends NormalRequest {
     }
 
     private String addSign() throws IOException {
-        if (textMap.get(Constants.SHOWAPI_APPID) == null) return errorMsg(Constants.SHOWAPI_APPID + "不得为空!");
-        textMap.put(Constants.SHOWAPI_SIGN, ShowApiUtils.signRequest(textMap, appSecret));
+        Map<String ,String> allParam=new HashMap<String ,String>();
+        if (urlMap!=null&&urlMap.get(Constants.SHOWAPI_APPID) == null) return errorMsg(Constants.SHOWAPI_APPID + "不得为空!");
+        allParam.putAll(urlMap);//加入url参数
+        allParam.putAll(textMap);//加入header参数
+
+        urlMap.put(Constants.SHOWAPI_SIGN, ShowApiUtils.signRequest(allParam, appSecret));
         return null;
     }
 
@@ -82,6 +94,10 @@ public class ShowApiRequest extends NormalRequest {
         try {
             String signResult = addSign();
             if (signResult != null) return signResult.getBytes("utf-8");
+            if(this.body!=null || this.bodyString!=null){
+                this.urlMap.putAll(this.textMap);
+                this.textMap.clear();
+            }
             res = WebUtils.doGetAsByte(this);
         } catch (Exception e) {
             e.printStackTrace();
@@ -99,5 +115,17 @@ public class ShowApiRequest extends NormalRequest {
         return str;
     }
 
+
+
+    public static void main(String[] args)  throws  Exception{
+        byte[] b=  new NormalRequest("http://httpbin.org/anything?xxxx=5555&yyy=6666" )
+                .addUrlPara("aaa","111")
+                .addUrlPara("bbb","222")
+                .addTextPara("ccc","中文")
+//                .setBodyString("this is body text")
+                .addFilePara("myfile",new File("c:/640.png"))
+                .postAsByte();
+        System.out.println(new String(b,"utf-8"));
+    }
 }
 

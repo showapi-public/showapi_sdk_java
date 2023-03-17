@@ -79,6 +79,7 @@ public class NormalRequest   {
 	}
 
 	public NormalRequest setBodyString(String bodyString) {
+		this.uploadMap.clear();   //只要设置了body体，则上传文件清空
 		this.bodyString = bodyString;
 		return this;
 	}
@@ -208,10 +209,12 @@ public class NormalRequest   {
 	}
 	
 	/**
-	 * 添加post体的上传文件参数
+	 * 添加post体的上传文件参数。如果设置过body，则不可以添加文件
 	 */
 	public NormalRequest addFilePara(String key,File item) {
-		this.uploadMap.put(key,item);
+		if(bodyString==null&&body==null){
+			this.uploadMap.put(key,item);
+		}
 		return this;
 	}
 	/**

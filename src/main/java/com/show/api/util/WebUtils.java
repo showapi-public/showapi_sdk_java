@@ -2,6 +2,7 @@ package com.show.api.util;
 
 import com.show.api.FileItem;
 import com.show.api.NormalRequest;
+import com.show.api.ShowApiRequest;
 
 import javax.net.ssl.*;
 import java.io.*;
@@ -12,6 +13,8 @@ import java.net.URLEncoder;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -75,13 +78,12 @@ public   class WebUtils {
 		String ctype = "application/x-www-form-urlencoded;charset=" + charset;
 		String query="";
 		String boundary="";
-
 		if(method.equals(METHOD_GET)){
 			ctype = "application/x-www-form-urlencoded;charset=" + charset;
 			query = buildQuery(req.getUrlMap(),req.getTextMap() ,charset  );
 
 		}else if(method.equals(METHOD_POST)){
-			query = buildQuery(req.getUrlMap(),null ,charset  );
+			query = buildQuery(req.getUrlMap(),null ,charset  );  //先生成url参数
 			boolean upload=false;
 			if(req.getUploadMap()!=null && req.getUploadMap().size()>0){
 				boundary = String.valueOf(System.nanoTime()); // 随机分隔线
@@ -128,7 +130,8 @@ public   class WebUtils {
 //					System.out.println(new String(body));
 				}else{
 
-					String body_content = buildQuery(req.getTextMap(),req.getUrlMap() ,charset  );
+					String body_content = buildQuery(null,req.getTextMap() ,charset  );
+
 					if(body_content!=null){
 //						System.out.println(req.getTextMap());
 						body=body_content.getBytes(charset  );
@@ -143,7 +146,9 @@ public   class WebUtils {
 			conn = getConnection(url, method, ctype,req);
 			conn.setConnectTimeout(req.getConnectTimeout());
 			conn.setReadTimeout(req.getReadTimeout());
+
 			if(!method.equals(METHOD_GET)){
+
 				out = conn.getOutputStream();
 				out.write(body);
 				out.flush();
@@ -333,12 +338,13 @@ public   class WebUtils {
 	}
 
 	public static String buildQuery(Map<String, String>  urlMap,Map<String, String>  params,String charset )   {
-		if (urlMap == null ){return  null;}
-		if (params != null ){urlMap.putAll(params);}
-		if (urlMap.isEmpty()) {return null;}
+		Map<String ,String> allParam=new HashMap<String ,String>();
+		if(urlMap!=null){allParam.putAll(urlMap);}
+		if(params!=null){allParam.putAll(params);}
+
 
 		StringBuilder query = new StringBuilder();
-		Set<Entry<String, String>> entries = urlMap.entrySet();
+		Set<Entry<String, String>> entries = allParam.entrySet();
 		boolean hasParam = false;
 		try {
 			for (Entry<String, String> entry : entries) {
@@ -419,54 +425,5 @@ public   class WebUtils {
 		}
 		return charset;
 	}
-	public static void main(String[] args)  throws  Exception{
-		{
-			byte[] b=  new NormalRequest("http://httpbin.org/anything?xxxx=0000&yyy=pppp" )
-					.addUrlPara("aaa","111")
-					.addUrlPara("bbb","222")
-					.addTextPara("ccc","中文")
-					.setBodyString("gggggggggggg")
-					.postAsByte();
-			System.out.println(new String(b,"utf-8"));
 
-		}
-
-
-//		{
-//			byte[] b=  new NormalRequest("https://www.showapi.com/apiNew/apiListDiv/" )
-//					.addHeadPara("content-type","application/x-www-form-urlencoded;charset=utf-8")
-//					.setBodyString("sortType=i&sortValue=-1&typeId=&srcId=all_src&iframe=false&search=%E7%9F%AD%E4%BF%A1&page=1&freeState=4\n")
-//					.postAsByte();
-//			System.out.println(new String(b,"utf-8"));
-//
-//		}
-
-//		{
-//			String bs=  new NormalRequest("https://www.showapi.com/apiNew/apiListDiv/" )
-//					.addHeadPara("content-type","application/x-www-form-urlencoded;charset=utf-8")
-//					.setBodyString("sortType=i&sortValue=-1&typeId=&srcId=all_src&iframe=false&search=%E7%9F%AD%E4%BF%A1&page=1&freeState=4\n")
-//					.post();
-//			System.out.println(bs);
-//
-//		}
-
-
-//		{
-//		FileItem file = new FileItem("d:/code.txt");
-//		String a=new String(file.getContent());
-//			String str=  new NormalRequest("https://www.showapi.com/apiNew/apiListDiv/" )
-//				.addTextPara("search","短信")
-//				.addTextPara("sortType","i")
-//				.addTextPara("sortValue","-1")
-//				.addTextPara("typeId","")
-//				.addTextPara("srcId","all_src")
-//				.addTextPara("freeState","4")
-////					.addHeadPara("content-type","application/x-www-form-urlencoded;charset=utf-8")
-////					.setBodyString("sortType=i&sortValue=-1&typeId=&srcId=all_src&iframe=false&search=%E7%9F%AD%E4%BF%A1&page=1&freeState=4\n")
-//					.post();
-//			System.out.println(str);
-//		}
-
-
-	}
 }
