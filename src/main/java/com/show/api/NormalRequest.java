@@ -250,7 +250,7 @@ public class NormalRequest   {
 	}
 
 	/**
-	 * @param heads : Accept-Encoding: gzip, deflate\r\nHost: www.qichacha.com\r\n
+	 * @param heads : Accept-Encoding: gzip, deflate\r\nHost: www.xxx.com\r\n
 	 * 添加字符串的头参数,用换行符和冒号组成的多个键值对
 	 */
 
