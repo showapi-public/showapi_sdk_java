@@ -6,6 +6,7 @@ import com.show.api.util.WebUtils;
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -367,7 +368,8 @@ public class NormalRequest   {
 		}catch (IOException e){
 			e.printStackTrace();
 		}
-		String str = javax.xml.bind.DatatypeConverter.printBase64Binary(buffer);
+//		String str = javax.xml.bind.DatatypeConverter.printBase64Binary(buffer);
+		String str = Base64.getEncoder().encodeToString(buffer);
 		return str;
 	}
 
