@@ -14,24 +14,12 @@ import java.util.Map;
  * 基于REST的客户端。
  */
 public class ShowApiRequest extends NormalRequest {
-    private String appSecret;
-
 
     public ShowApiRequest(String url, String appid, String appSecret) {
         super(url);
-        this.appSecret = appSecret;
         this.addUrlPara("showapi_appid", appid);
+        this.addUrlPara("showapi_sign", appSecret);
     }
-
-
-    public String getAppSecret() {
-        return appSecret;
-    }
-
-    public void setAppSecret(String appSecret) {
-        this.appSecret = appSecret;
-    }
-
 
     public String post() {
         String res = null;
@@ -48,9 +36,6 @@ public class ShowApiRequest extends NormalRequest {
     public byte[] postAsByte() {
         byte res[] = null;
         try {
-
-            String signResult = addSign();  //这里是在textArea中添加sian参数
-            if (signResult != null) return signResult.getBytes("utf-8");
             if(this.body!=null || this.bodyString!=null){
                 this.urlMap.putAll(this.textMap);
                 this.textMap.clear();
@@ -67,15 +52,6 @@ public class ShowApiRequest extends NormalRequest {
         return res;
     }
 
-    private String addSign() throws IOException {
-        Map<String ,String> allParam=new HashMap<String ,String>();
-        if (urlMap!=null&&urlMap.get(Constants.SHOWAPI_APPID) == null) return errorMsg(Constants.SHOWAPI_APPID + "不得为空!");
-        allParam.putAll(urlMap);//加入url参数
-        allParam.putAll(textMap);//加入header参数
-
-        urlMap.put(Constants.SHOWAPI_SIGN, ShowApiUtils.signRequest(allParam, appSecret));
-        return null;
-    }
 
     public String get() {
         String res = null;
@@ -92,8 +68,6 @@ public class ShowApiRequest extends NormalRequest {
     public byte[] getAsByte() {
         byte[] res = null;
         try {
-            String signResult = addSign();
-            if (signResult != null) return signResult.getBytes("utf-8");
             if(this.body!=null || this.bodyString!=null){
                 this.urlMap.putAll(this.textMap);
                 this.textMap.clear();
@@ -116,16 +90,33 @@ public class ShowApiRequest extends NormalRequest {
     }
 
 
+//test case
+//    public static void main(String[] args)  throws  Exception{
+//        byte[] b= new ShowApiRequest("https://route.showapi.com/20-1",
+//                "12312" ,"7be43eb....8f45")
+//                .addTextPara("ip","116.4.201.181")
+//                .getAsByte();
+        //        System.out.println(new String(b,"utf-8"));
 
-    public static void main(String[] args)  throws  Exception{
-        byte[] b=  new NormalRequest("http://httpbin.org/anything?xxxx=5555&yyy=6666" )
-                .addUrlPara("aaa","111")
-                .addUrlPara("bbb","222")
-                .addTextPara("ccc","中文")
-//                .setBodyString("this is body text")
-                .addFilePara("myfile",new File("c:/640.png"))
-                .postAsByte();
-        System.out.println(new String(b,"utf-8"));
-    }
+//        byte[] b=  new NormalRequest("https://route.showapi.com/20-1" )
+//                .addUrlPara("showapi_appid","12312")
+//                .addUrlPara("showapi_sign","7be43eb....8f45")
+//                .addTextPara("ip","116.4.201.181")
+//                .postAsByte();
+//        System.out.println(new String(b,"utf-8"));
+
+//        System.out.println(new ShowApiRequest("https://route.showapi.com/20-1",
+//                "12312" ,"7be43eb....8f45")
+//                .addTextPara("ip","116.4.201.181")
+//                .get());
+
+//        System.out.println(new ShowApiRequest("https://route.showapi.com/20-1",
+//                "12312" ,"7be43eb....8f45")
+//                .addTextPara("ip","116.4.201.181")
+//                .post());
+
+//    }
+
+
 }
 
